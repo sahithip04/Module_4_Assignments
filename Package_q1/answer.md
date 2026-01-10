@@ -59,10 +59,6 @@ NPM:
 - Stores dependency details in `package.json`
 - Locks exact versions using `package-lock.json`
 
-**Example:**
-```bash
-npm install express
-
 ---
 
 ## c. Backend Project Initialization
@@ -71,7 +67,6 @@ npm install express
 
 The command used to initialize a Node.js backend project is:
 
-```bash
 npm init
 
 ---
