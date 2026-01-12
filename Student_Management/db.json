@@ -1,0 +1,22 @@
+{
+  "students": [
+    {
+      "id": 1768225922804,
+      "name": "Rahul",
+      "course": "Computer Science",
+      "year": 2
+    },
+    {
+      "id": 1768226852181,
+      "name": "Sahithi",
+      "course": "Frontend developer",
+      "year": 4
+    },
+    {
+      "id": 1768227124349,
+      "name": "Harshitha",
+      "course": "Electrical Engineering",
+      "year": 2
+    }
+  ]
+}
