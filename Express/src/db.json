@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "id": 1768398254899,
+      "name": "John",
+      "email": "john@example.com"
+    }
+  ],
+  "todos": [
+    {
+      "id": 1768398751052,
+      "completed": true,
+      "title": "Learn Express",
+      "userId": 1
+    }
+  ]
+}
