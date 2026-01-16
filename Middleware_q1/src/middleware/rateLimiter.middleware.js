@@ -8,7 +8,6 @@ const rateLimiter = (req, res, next) => {
     rateLimitMap[ip] = [];
   }
 
-  // Keep only requests from last 1 minute
   rateLimitMap[ip] = rateLimitMap[ip].filter(
     (time) => currentTime - time < 60000
   );
