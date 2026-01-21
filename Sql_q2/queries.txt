@@ -1,0 +1,115 @@
+Step 1: Create a Table
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    age INTEGER,
+    course TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ 
+Output : Success. No rows returned
+
+
+Step 2: Insert Data
+INSERT INTO students (name, email, age, course)
+VALUES
+('Aarav Sharma', 'aarav.sharma@gmail.com', 21, 'Computer Science'),
+('Neha Verma', 'neha.verma@gmail.com', 19, 'Electronics'),
+('Rohan Patel', 'rohan.patel@gmail.com', 22, 'Computer Science'),
+('Sneha Iyer', 'sneha.iyer@gmail.com', 20, 'Mechanical'),
+('Karthik Reddy', 'karthik.reddy@gmail.com', 23, 'Information Technology');
+
+Output : Success. No rows returned
+
+
+Step 3: Read Data
+1) Fetch all students
+SELECT * FROM students;
+
+Output : 
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 1  | Aarav Sharma  | aarav.sharma@gmail.com  | 21  | Computer Science       | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 19  | Electronics            | 2026-01-21 16:03:03.47268 |
+| 3  | Rohan Patel   | rohan.patel@gmail.com   | 22  | Computer Science       | 2026-01-21 16:03:03.47268 |
+| 4  | Sneha Iyer    | sneha.iyer@gmail.com    | 20  | Mechanical             | 2026-01-21 16:03:03.47268 |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+
+2) Fetch students older than 20
+SELECT * FROM students
+WHERE age > 20;
+
+Output :
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 1  | Aarav Sharma  | aarav.sharma@gmail.com  | 21  | Computer Science       | 2026-01-21 16:03:03.47268 |
+| 3  | Rohan Patel   | rohan.patel@gmail.com   | 22  | Computer Science       | 2026-01-21 16:03:03.47268 |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+
+3) Fetch only name and email column
+SELECT name, email FROM students;
+
+Output :
+| name          | email                   |
+| ------------- | ----------------------- |
+| Aarav Sharma  | aarav.sharma@gmail.com  |
+| Neha Verma    | neha.verma@gmail.com    |
+| Rohan Patel   | rohan.patel@gmail.com   |
+| Sneha Iyer    | sneha.iyer@gmail.com    |
+| Karthik Reddy | karthik.reddy@gmail.com |
+
+4) Fetch students enrolled in a specific course
+SELECT * FROM students
+WHERE course = 'Computer Science';
+
+Output :
+| id | name         | email                  | age | course           | created_at                |
+| -- | ------------ | ---------------------- | --- | ---------------- | ------------------------- |
+| 1  | Aarav Sharma | aarav.sharma@gmail.com | 21  | Computer Science | 2026-01-21 16:03:03.47268 |
+| 3  | Rohan Patel  | rohan.patel@gmail.com  | 22  | Computer Science | 2026-01-21 16:03:03.47268 |
+
+Step 4: Update Data
+1) Update the age of one student
+UPDATE students
+SET age = 22
+WHERE email = 'neha.verma@gmail.com';
+
+Output : Success. No rows returned
+
+2) Update the course for all students enrolled in one course
+UPDATE students
+SET course = 'AI & Data Science'
+WHERE course = 'Computer Science';
+
+Output : Success. No rows returned
+
+Table after Updating 
+
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 4  | Sneha Iyer    | sneha.iyer@gmail.com    | 20  | Mechanical             | 2026-01-21 16:03:03.47268 |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 22  | Electronics            | 2026-01-21 16:03:03.47268 |
+| 1  | Aarav Sharma  | aarav.sharma@gmail.com  | 21  | AI & Data Science      | 2026-01-21 16:03:03.47268 |
+| 3  | Rohan Patel   | rohan.patel@gmail.com   | 22  | AI & Data Science      | 2026-01-21 16:03:03.47268 |
+
+Step 5: Delete Data
+1) Delete one student using id
+DELETE FROM students
+WHERE id = 3;
+ 
+Output : Success. No rows returned
+
+2) Delete all students below a certain age
+DELETE FROM students
+WHERE age < 22;
+
+Output : Success. No rows returned
+
+Table after deleting 
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 22  | Electronics            | 2026-01-21 16:03:03.47268 |
+
