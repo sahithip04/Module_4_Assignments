@@ -1,0 +1,141 @@
+Step 1: Use the Existing students Table
+
+Output : The previous table after running SQL commands
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 22  | Electronics            | 2026-01-21 16:03:03.47268 |
+
+Step 2: Aggregate Queries
+
+1) Count the total number of students
+
+SELECT COUNT(*) AS total_students
+FROM students;
+
+Output :
+| total_students |
+| -------------- |
+| 2              |
+
+2) Find the average age of students
+
+SELECT AVG(age) AS average_age
+FROM students;
+
+Output :
+| average_age         |
+| ------------------- |
+| 22.5000000000000000 |
+
+3) Find the minimum and maximum age
+
+SELECT MIN(age) AS minimum_age,
+       MAX(age) AS maximum_age
+FROM students;
+
+Output :
+| minimum_age | maximum_age |
+| ----------- | ----------- |
+| 22          | 23          |
+
+4) Count how many students are enrolled in each course
+
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course;
+
+Output :
+| course                 | student_count |
+| ---------------------- | ------------- |
+| Electronics            | 1             |
+| Information Technology | 1             |
+
+5) Count students whose age is greater than 20
+
+SELECT COUNT(*) AS students_above_20
+FROM students
+WHERE age > 20;
+
+Output :
+| students_above_20 |
+| ----------------- |
+| 2                 |
+
+Step 3: Grouping & Filtering
+
+1) Display course-wise student count
+
+SELECT 
+    course,
+    COUNT(*) AS student_count
+FROM students
+GROUP BY course;
+
+Output :
+| course                 | student_count |
+| ---------------------- | ------------- |
+| Electronics            | 1             |
+| Information Technology | 1             |
+
+2) Display only courses where student count is greater than 1
+
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course
+HAVING COUNT(*) > 1;
+
+Output : Success. No rows returned
+
+3) Display courses sorted by highest student count first
+
+SELECT course, COUNT(*) AS student_count
+FROM students
+GROUP BY course
+ORDER BY student_count DESC;
+
+Output :
+| course                 | student_count |
+| ---------------------- | ------------- |
+| Electronics            | 1             |
+| Information Technology | 1             |
+
+Step 4: Ordering & Limiting
+
+1) Fetch the latest 3 students based on created_at
+
+SELECT *
+FROM students
+ORDER BY created_at DESC
+LIMIT 3;
+
+Output :
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 22  | Electronics            | 2026-01-21 16:03:03.47268 |
+
+2) Fetch the top 5 oldest students
+
+SELECT *
+FROM students
+ORDER BY age DESC
+LIMIT 5;
+
+Output :
+| id | name          | email                   | age | course                 | created_at                |
+| -- | ------------- | ----------------------- | --- | ---------------------- | ------------------------- |
+| 5  | Karthik Reddy | karthik.reddy@gmail.com | 23  | Information Technology | 2026-01-21 16:03:03.47268 |
+| 2  | Neha Verma    | neha.verma@gmail.com    | 22  | Electronics            | 2026-01-21 16:03:03.47268 |
+
+3) Fetch students enrolled in a specific course, sorted by age (descending)
+
+SELECT *
+FROM students
+WHERE course = 'Electronics'
+ORDER BY age DESC;
+
+Output :
+| id | name       | email                | age | course      | created_at                |
+| -- | ---------- | -------------------- | --- | ----------- | ------------------------- |
+| 2  | Neha Verma | neha.verma@gmail.com | 22  | Electronics | 2026-01-21 16:03:03.47268 |
