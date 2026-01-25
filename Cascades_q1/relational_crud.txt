@@ -1,0 +1,228 @@
+Step 1: Create Tables with Relationships
+
+Table 1: users
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+Output : Success. No rows returned
+
+Table 2: orders
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE RESTRICT,
+    amount INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+Output : Success. No rows returned
+
+Step 2: Insert Data
+
+INSERT INTO users (name, email) VALUES
+('Sahithi Reddy', 'sahithi.reddy@email.com'),
+('Manish Kumar', 'manish.kumar@email.com'),
+('Priya Singh', 'priya.singh@email.com'),
+('Rohit Sharma', 'rohit.sharma@email.com'),
+('Ananya Mehta', 'ananya.mehta@email.com');
+
+Output : Success. No rows returned
+
+INSERT INTO orders (user_id, amount, status) VALUES
+(1, 250, 'Pending'),
+(1, 400, 'Completed'),    
+(2, 150, 'Pending'),
+(3, 300, 'Shipped'),
+(3, 500, 'Completed'),    
+(4, 200, 'Cancelled'),
+(5, 100, 'Pending'),
+(2, 350, 'Completed');
+
+Output : Success. No rows returned
+
+Step 3: Read Data
+
+1) Fetch all users
+
+SELECT * FROM users;
+
+Output :
+| id | name          | email                     | created_at                 |
+| -- | ------------- | ------------------------- | -------------------------- |
+| 1  | Sahithi Reddy | sahithi.reddy@email.com | 2026-01-25 15:26:57.615675 |
+| 2  | Manish Kumar  | manish.kumar@email.com  | 2026-01-25 15:26:57.615675 |
+| 3  | Priya Singh   | priya.singh@email.com   | 2026-01-25 15:26:57.615675 |
+| 4  | Rohit Sharma  | rohit.sharma@email.com  | 2026-01-25 15:26:57.615675 |
+| 5  | Ananya Mehta  | ananya.mehta@email.com  | 2026-01-25 15:26:57.615675 |
+
+2) Fetch all orders
+
+SELECT * FROM orders;
+
+Output :
+| id | user_id | amount | status    | created_at                 |
+| -- | ------- | ------ | --------- | -------------------------- |
+| 1  | 1       | 250    | Pending   | 2026-01-25 15:27:58.481646 |
+| 2  | 1       | 400    | Completed | 2026-01-25 15:27:58.481646 |
+| 3  | 2       | 150    | Pending   | 2026-01-25 15:27:58.481646 |
+| 4  | 3       | 300    | Shipped   | 2026-01-25 15:27:58.481646 |
+| 5  | 3       | 500    | Completed | 2026-01-25 15:27:58.481646 |
+| 6  | 4       | 200    | Cancelled | 2026-01-25 15:27:58.481646 |
+| 7  | 5       | 100    | Pending   | 2026-01-25 15:27:58.481646 |
+| 8  | 2       | 350    | Completed | 2026-01-25 15:27:58.481646 |
+
+3) Fetch all orders for a specific user
+
+SELECT * FROM orders
+WHERE user_id = 1;
+
+Output :
+| id | user_id | amount | status    | created_at                 |
+| -- | ------- | ------ | --------- | -------------------------- |
+| 1  | 1       | 250    | Pending   | 2026-01-25 15:27:58.481646 |
+| 2  | 1       | 400    | Completed | 2026-01-25 15:27:58.481646 |
+
+4) Fetch users who have more than one order
+
+SELECT u.id, u.name, COUNT(o.id) AS order_count
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name
+HAVING COUNT(o.id) > 1;
+
+Output :
+| id | name          | order_count |
+| -- | ------------- | ----------- |
+| 2  | Manish Kumar  | 2           |
+| 3  | Priya Singh   | 2           |
+| 1  | Sahithi Reddy | 2           |
+
+5) Fetch total order amount per user
+
+SELECT u.id, u.name, SUM(o.amount) AS total_amount
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name;
+
+Output :
+| id | name          | total_amount |
+| -- | ------------- | ------------ |
+| 4  | Rohit Sharma  | 200          |
+| 2  | Manish Kumar  | 500          |
+| 3  | Priya Singh   | 800          |
+| 5  | Ananya Mehta  | 100          |
+| 1  | Sahithi Reddy | 650          |
+
+Step 4: Update Data
+
+1) Update the email of one user
+
+UPDATE users
+SET email = 'alice.new@email.com'
+WHERE id = 5;
+
+Output : Success. No rows returned
+
+2) Update the status of all orders for a specific user
+
+UPDATE orders
+SET status = 'Shipped'
+WHERE user_id = 2;
+
+Output : Success. No rows returned
+
+3) Update order amount for a single order
+
+UPDATE orders
+SET amount = 175
+WHERE id = 3;
+
+Output : Success. No rows returned
+
+Tables after updation 
+
+users table 
+| id | name          | email                     | created_at                 |
+| -- | ------------- | ------------------------- | -------------------------- |
+| 1  | Sahithi Reddy | sahithi.reddy@email.com | 2026-01-25 15:26:57.615675 |
+| 2  | Manish Kumar  | manish.kumar@email.com  | 2026-01-25 15:26:57.615675 |
+| 3  | Priya Singh   | priya.singh@email.com   | 2026-01-25 15:26:57.615675 |
+| 4  | Rohit Sharma  | rohit.sharma@email.com  | 2026-01-25 15:26:57.615675 |
+| 5  | Ananya Mehta  | alice.new@email.com       | 2026-01-25 15:26:57.615675 |
+
+orders table
+| id | user_id | amount | status    | created_at                 |
+| -- | ------- | ------ | --------- | -------------------------- |
+| 1  | 1       | 250    | Pending   | 2026-01-25 15:27:58.481646 |
+| 2  | 1       | 400    | Completed | 2026-01-25 15:27:58.481646 |
+| 4  | 3       | 300    | Shipped   | 2026-01-25 15:27:58.481646 |
+| 5  | 3       | 500    | Completed | 2026-01-25 15:27:58.481646 |
+| 6  | 4       | 200    | Cancelled | 2026-01-25 15:27:58.481646 |
+| 7  | 5       | 100    | Pending   | 2026-01-25 15:27:58.481646 |
+| 8  | 2       | 350    | Shipped   | 2026-01-25 15:27:58.481646 |
+| 3  | 2       | 175    | Shipped   | 2026-01-25 15:27:58.481646 |
+
+Step 5: Delete Data
+
+1) Delete one order using order id
+
+DELETE FROM orders
+WHERE id = 8;
+
+Output : Success. No rows returned
+
+2) Delete all orders of a specific user
+
+DELETE FROM orders
+WHERE user_id = 3;
+
+Output : Success. No rows returned
+
+3) Attempt deleting a user with existing orders and observe the behavior
+
+DELETE FROM users
+WHERE id = 1;
+
+Output : Error: Failed to run sql query: ERROR: 23503: update or delete on table "users" violates foreign key constraint "orders_user_id_fkey" on table "orders" DETAIL: Key (id)=(1) is still referenced from table "orders".
+
+Tables after deletion 
+
+users table 
+
+| id | name          | email                     | created_at                 |
+| -- | ------------- | ------------------------- | -------------------------- |
+| 1  | Sahithi Reddy | sahithi.reddy@example.com | 2026-01-25 15:26:57.615675 |
+| 2  | Manish Kumar  | manish.kumar@example.com  | 2026-01-25 15:26:57.615675 |
+| 3  | Priya Singh   | priya.singh@example.com   | 2026-01-25 15:26:57.615675 |
+| 4  | Rohit Sharma  | rohit.sharma@example.com  | 2026-01-25 15:26:57.615675 |
+| 5  | Ananya Mehta  | alice.new@email.com       | 2026-01-25 15:26:57.615675 |
+
+orders table 
+
+| id | user_id | amount | status    | created_at                 |
+| -- | ------- | ------ | --------- | -------------------------- |
+| 1  | 1       | 250    | Pending   | 2026-01-25 15:27:58.481646 |
+| 2  | 1       | 400    | Completed | 2026-01-25 15:27:58.481646 |
+| 6  | 4       | 200    | Cancelled | 2026-01-25 15:27:58.481646 |
+| 7  | 5       | 100    | Pending   | 2026-01-25 15:27:58.481646 |
+| 3  | 2       | 175    | Shipped   | 2026-01-25 15:27:58.481646 |
+
+
+Step 6: Conceptual Question
+
+Why should orders not be stored inside the users table?
+
+Orders should not be stored inside the users table because a single user can have many orders. 
+If we keep orders in the same table, the user’s details would have to be repeated for every order, 
+which leads to data duplication. This makes the table messy and harder to manage when updating or deleting data. 
+By keeping orders in a separate table and connecting it using a foreign key, the data remains organized, avoids
+repetition, and follows proper database design principles.
+
+
+
